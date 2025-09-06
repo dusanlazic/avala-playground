@@ -59,7 +59,9 @@ Launch all containers in the following order:
     ```console
     $ avl flag-ids security 10.10.53.1
     ["nicole14@example.com", "simmonsholly@example.com", "fullermiranda@example.net", "stephanierobinson@example.com", "michael85@example.org"]
-    (venv) $ avl launch wish_team_188
+    
+    ```console
+    $ avl launch wish_team_188
     [20:43:01] INFO     🚀 Launching exploit wish_team_188 (batch 1/1)...
     ...
     ```
