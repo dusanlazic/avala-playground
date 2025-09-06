@@ -1,0 +1,31 @@
+services:
+  avala-playground-flag-ids:
+    build:
+      context: flag_ids
+      dockerfile: Dockerfile
+    environment:
+      FIRST_TICK_START: 2025-07-17T06:20:00
+      TICK_DURATION: 60
+    ports:
+      - "5001:80"
+    container_name: avala-flag-ids
+
+  avala-playground-http-submission:
+    build:
+      context: http_submission
+      dockerfile: Dockerfile
+    environment:
+      FLAG_PATTERN: ENO[A-Za-z0-9+\/=]{48}
+    ports:
+      - "5002:80"
+    container_name: avala-flags-http
+  
+  avala-playground-tcp-submission:
+    build:
+      context: tcp_submission
+      dockerfile: Dockerfile
+    environment:
+      FLAG_PATTERN: ENO[A-Za-z0-9+\/=]{48}
+    ports:
+      - "5003:4444"
+    container_name: avala-flags-tcp

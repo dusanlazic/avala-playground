@@ -1,0 +1,77 @@
+services:
+  avala-server:
+    image: avala-server
+    ports:
+      - "2024:2024"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_started
+    restart: always
+    environment:
+      TZ: Europe/Belgrade
+      EXTRA_PACKAGES: requests==2.32.5
+    tty: true
+    volumes:
+      - ./avala.yaml:/etc/avala/avala.yaml:ro
+      - ./flag_ids.py:/etc/avala/flag_ids.py:ro
+
+  avala-submitter:
+    image: avala-submitter
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_started
+    restart: always
+    environment:
+      TZ: Europe/Belgrade
+      EXTRA_PACKAGES: pwntools==4.14.1
+    tty: true
+    volumes:
+      - ./avala.yaml:/etc/avala/avala.yaml:ro
+      - ./submitter_tcp.py:/etc/avala/submitter.py:ro
+    deploy:
+      replicas: 2
+
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    restart: always
+    tty: true
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+  postgres:
+    image: postgres:alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: avala
+    tty: true
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  rabbitmq-data:
+    driver: local
+  postgres-data:
+    driver: local
+
+networks:
+  shared:
+    external: true
+    name: shared
