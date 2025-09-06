@@ -28,13 +28,16 @@ Launch all containers in the following order:
 
 3. Setup client environment
 
-    Client environment is preconfigured to work with the configuration provided in `avala.yaml` file. To start playing with the Avala client, install `avala-ad` and start running commands.
+    Client environment is preconfigured to work with the configuration provided in `avala.yaml` file. To start playing with the Avala client, install `avala-ad` in a virtual environment and start running commands.
 
     ```console
+    $ cd client
     $ python3 -m venv venv && source venv/bin/activate
-    (venv) $ pip install avala-ad
+    $ pip install avala-ad
     Successfully installed avala-ad-0.1.0
-    (venv) $ avl exploits
+    ```
+    ```console
+    $ avl exploits
     wish
     wish_team_188 (draft)
     wish_experimental (draft)
@@ -42,7 +45,9 @@ Launch all containers in the following order:
     history_2
     security.testing (draft)
     all_at_once
-    (venv) $ avl services
+    ```
+    ```console
+    $ avl services
     history
     none
     own
@@ -50,7 +55,9 @@ Launch all containers in the following order:
     prepare
     security
     wish
-    (venv) $ avl flag-ids security 10.10.53.1
+    ```
+    ```console
+    $ avl flag-ids security 10.10.53.1
     ["nicole14@example.com", "simmonsholly@example.com", "fullermiranda@example.net", "stephanierobinson@example.com", "michael85@example.org"]
     (venv) $ avl launch wish_team_188
     [20:43:01] INFO     🚀 Launching exploit wish_team_188 (batch 1/1)...
